@@ -11,7 +11,11 @@ import fetch from "node-fetch";
 import userRoutes from "./routes/userRoutes.js";
 import issueRoutes from "./routes/issueRoutes.js";
 
-dotenv.config({ path: "./backend/.env" });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, ".env") });
+
 
 const app = express();
 
@@ -20,17 +24,14 @@ app.use(express.json());
 
 // ✅ MongoDB connect
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("MongoDB Connection Failed:", err));
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 
 // ✅ Uploads folder
+
 const uploadsDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
@@ -165,73 +166,6 @@ app.post("/api/ai/detect", upload.single("image"), async (req, res) => {
     } catch {}
   }
 });
-
-
-// ✅ AI Detect route (Hugging Face Inference)
-// ✅ AI Detect route (Hugging Face Inference)
-const handleImageChange = async (e) => {
-  try {
-    const file = e?.target?.files?.[0];
-    if (!file) return;
-
-    // preview straight away
-    setImage(file);
-    setPreviewUrl(URL.createObjectURL(file));
-
-    setIsDetecting(true);
-    setDescription("");
-    setIssueType("");
-
-    const fd = new FormData();
-    fd.append("image", file);
-
-    // include the current location value (if any) so server can include it in fallback paragraph
-    if (location) fd.append("location", location);
-
-    const DETECT_URL = "http://localhost:5000/api/ai/detect"; // change port if needed
-
-    console.log("Sending image to detect endpoint...", file.name);
-
-    const res = await fetch(DETECT_URL, {
-      method: "POST",
-      body: fd,
-    });
-
-    console.log("Detect HTTP status:", res.status);
-
-    let data;
-    try {
-      data = await res.json();
-    } catch (err) {
-      const t = await res.text();
-      console.error("Detect response not JSON:", err, t);
-      setIsDetecting(false);
-      return;
-    }
-
-    console.log("Detect response:", data);
-
-    // Always set description if server returned one (fallback or HF)
-    if (data.description) {
-      // keep it as paragraph (textarea supports newlines). If server gives multiple sentences, they'll be shown.
-      setDescription(data.description);
-    } else {
-      // safety fallback
-      setDescription("Please describe the issue briefly.");
-    }
-
-    // Use server-detected issue type if available and not empty
-    if (data.typeOfIssue) {
-      setIssueType(data.typeOfIssue);
-    } else {
-      setIssueType("other");
-    }
-  } catch (err) {
-    console.error("Detection error:", err);
-  } finally {
-    setIsDetecting(false);
-  }
-};
 
 
 // ✅ Static uploads

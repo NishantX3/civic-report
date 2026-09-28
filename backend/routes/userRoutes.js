@@ -10,8 +10,16 @@ import twilio from "twilio";
 
 const router = express.Router();
 
-// ✅ Twilio Client
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
+// ✅ Twilio Client (optional — only if credentials are configured)
+let twilioClient = null;
+try {
+  if (process.env.TWILIO_SID && process.env.TWILIO_AUTH) {
+    twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
+  }
+} catch (err) {
+  console.warn("Twilio init skipped:", err.message);
+}
+
 
 // ✅ Nodemailer Config (Gmail SMTP)
 const transporter = nodemailer.createTransport({
@@ -51,15 +59,15 @@ router.post("/register", async (req, res) => {
     });
 
     // ✅ Prepare notification messages
-    const engMessage = `Hey ${name}, 🎉 You have successfully registered on AI Local Issue Reporter.`;
-    const hindiMessage = `नमस्ते ${name}, 🎉 आपने AI Local Issue Reporter पर सफलतापूर्वक पंजीकरण कर लिया है।`;
+    const engMessage = `Hey ${name}, 🎉 You have successfully registered on Civic Report.`;
+    const hindiMessage = `नमस्ते ${name}, 🎉 आपने Civic Report पर सफलतापूर्वक पंजीकरण कर लिया है।`;
 
     // ✅ Send Email
     if (email) {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: "✅ Registration Successful | AI Local Issue Reporter",
+        subject: "✅ Registration Successful | Civic Report",
         text: `${engMessage}\n\n${hindiMessage}`,
       };
 
@@ -70,7 +78,8 @@ router.post("/register", async (req, res) => {
     }
 
     // ✅ Send SMS
-    if (phone) {
+    if (phone && twilioClient) {
+
       twilioClient.messages
         .create({
           body: `${engMessage}\n${hindiMessage}`,

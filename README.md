@@ -1,5 +1,4 @@
-cat << 'EOF' > README.md
-# 🌍 AI-Powered Local Issue Reporter  
+# 🌍 Civic Report — AI-Powered Local Issue Reporting & Resolution Platform  
 
 An intelligent platform that empowers citizens to **report local civic issues** (potholes, electricity, sanitation, etc.) and allows authorities to manage, track, and resolve them efficiently. Built with a **modern full-stack architecture** and enhanced with **AI-powered features** for automatic issue detection and descriptions.  
 
@@ -35,7 +34,7 @@ An intelligent platform that empowers citizens to **report local civic issues** 
 
 ## 📂 Project Structure  
 ```bash
-AI-Powered-Local-Issue-Reporter/
+civic-report/
 ├── backend/                  # Backend (Node.js + Express)
 │   ├── config/               # DB and server configurations
 │   ├── controllers/          # Controller logic for routes
@@ -122,4 +121,3 @@ This project is licensed under the **MIT License**.
 
 ## 🌟 Show your support  
 If you liked this project, give it a ⭐ on [GitHub](https://github.com/jatinn2512/local-issue-reporter)  
-EOF
