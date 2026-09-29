@@ -148,7 +148,7 @@ Make sure you have the following installed:
 
 ### 1. Install Dependencies
 
-Clone your repository and enter the project directory:
+Clone the repository and enter the project directory:
 
 ```bash
 git clone https://github.com/NishantX3/civic-report.git
