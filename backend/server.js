@@ -14,19 +14,26 @@ import issueRoutes from "./routes/issueRoutes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load environment variables
 dotenv.config({ path: path.join(__dirname, ".env") });
-
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB connect
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Connection Failed:", err));
+// ✅ MongoDB connection using MONGO_URI from process.env
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ Error: MONGO_URI is not defined in backend .env");
+} else {
+  mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("✅ MongoDB Connected Successfully"))
+    .catch((err) => console.error("❌ MongoDB Connection Failed:", err.message));
+}
 
 
 

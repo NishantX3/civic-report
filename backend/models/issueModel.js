@@ -13,5 +13,5 @@ const issueSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Issue = mongoose.model("Issue", issueSchema);
+const Issue = mongoose.models.Issue || mongoose.model("Issue", issueSchema);
 export default Issue;

@@ -53,21 +53,21 @@ function YourArea() {
   }, []);
 
   if (loading) {
-    return <p className="p-8">{lang === 'en' ? 'Detecting your city...' : 'आपके शहर का पता लगाया जा रहा है...'}</p>;
+    return <p className="p-8 text-gray-700 dark:text-slate-300">{lang === 'en' ? 'Detecting your city...' : 'आपके शहर का पता लगाया जा रहा है...'}</p>;
   }
 
   return (
-    <div className="p-8 report-background min-h-screen flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-6 w-full max-w-4xl text-left">
+    <div className="p-8 min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-gray-100 to-white dark:from-[#0b1120] dark:via-slate-900 dark:to-[#0b1120] text-gray-900 dark:text-slate-100 transition-colors duration-300">
+      <h2 className="text-3xl font-extrabold mb-8 w-full max-w-4xl text-left bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent drop-shadow-sm">
         {lang === 'en' ? `City Authorities for ${userCity}` : `${userCity} के अधिकारी`}
       </h2>
 
       {cityAuthorities.length === 0 ? (
-        <p className="w-full max-w-4xl">{lang === 'en' ? 'No authority info available for your city.' : 'आपके शहर के लिए कोई अधिकारी जानकारी उपलब्ध नहीं है।'}</p>
+        <p className="w-full max-w-4xl text-gray-500 dark:text-slate-400 text-lg">{lang === 'en' ? 'No authority info available for your city.' : 'आपके शहर के लिए कोई अधिकारी जानकारी उपलब्ध नहीं है।'}</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 w-full max-w-4xl">
           {cityAuthorities.map(auth => (
-            <div key={auth.id} className="bg-white rounded-2xl shadow-2xl p-6 flex flex-col">
+            <div key={auth.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-2 flex flex-col border border-gray-100 dark:border-slate-700">
               <Card
                 title={lang === 'en' ? auth.office : `अनुवाद: ${auth.office}`}
                 description={`${lang === 'en' ? auth.official : `अनुवाद: ${auth.official}`} - ${auth.position}`}

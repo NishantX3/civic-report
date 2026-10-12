@@ -145,10 +145,10 @@ function ReportIssue() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-[100px] bg-gradient-to-br from-blue-50 via-white to-teal-50">
+    <div className="min-h-screen flex flex-col items-center pt-[100px] px-4 bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:from-[#0b1120] dark:via-slate-900 dark:to-[#0b1120] text-gray-900 dark:text-slate-100 transition-colors duration-300">
       {!status && (
-        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl relative z-10 flex flex-col p-8 md:p-10 border border-gray-200">
-          <h2 className="text-4xl font-extrabold text-center md:text-left bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent drop-shadow-sm mb-8">
+        <div className="w-full max-w-4xl bg-white dark:bg-slate-800/90 rounded-2xl shadow-xl relative z-10 flex flex-col p-6 sm:p-8 md:p-10 border border-gray-200 dark:border-slate-700/80 transition-colors">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-center md:text-left bg-gradient-to-r from-blue-600 to-teal-500 dark:from-blue-400 dark:to-teal-400 bg-clip-text text-transparent drop-shadow-sm mb-8">
             {lang === "en" ? "Report an Issue" : "समस्या दर्ज करें"}
           </h2>
 
@@ -159,11 +159,11 @@ function ReportIssue() {
                 accept="image/*"
                 capture="environment"
                 onChange={handleImageChange}
-                className="w-full text-gray-700"
+                className="w-full text-gray-700 dark:text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 dark:file:bg-teal-950/60 dark:file:text-teal-300 hover:file:bg-teal-100 cursor-pointer"
                 required
               />
               {isDetecting && (
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-teal-600 dark:text-teal-400 mt-2 font-medium animate-pulse">
                   {lang === "en"
                     ? "Detecting from image..."
                     : "छवि से पहचान की जा रही है..."}
@@ -176,7 +176,7 @@ function ReportIssue() {
               placeholder={lang === "en" ? "Issue Title" : "समस्या का शीर्षक"}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-4 rounded-xl bg-gray-50 text-gray-800 placeholder-gray-400 border border-gray-300 focus:ring-2 focus:ring-teal-400 outline-none"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-500 outline-none transition-colors"
               required
               disabled={isDetecting}
             />
@@ -189,7 +189,7 @@ function ReportIssue() {
               }
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-4 rounded-xl bg-gray-50 text-gray-800 placeholder-gray-400 border border-gray-300 focus:ring-2 focus:ring-teal-400 outline-none"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-500 outline-none transition-colors"
               rows={5}
               required
               disabled={isDetecting}
@@ -204,7 +204,7 @@ function ReportIssue() {
               }
               value={issueType}
               onChange={(e) => setIssueType(e.target.value)}
-              className="w-full p-4 rounded-xl bg-gray-50 text-gray-800 placeholder-gray-400 border border-gray-300 focus:ring-2 focus:ring-teal-400 outline-none"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-500 outline-none transition-colors"
               disabled={isDetecting}
             />
 
@@ -217,24 +217,24 @@ function ReportIssue() {
               }
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full p-4 rounded-xl bg-gray-50 text-gray-800 placeholder-gray-400 border border-gray-300 focus:ring-2 focus:ring-teal-400 outline-none"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-500 outline-none transition-colors"
               disabled={isDetecting}
             />
 
             <button
               type="submit"
-              className={`w-full py-3 rounded-xl font-semibold transition text-lg shadow-md ${
+              className={`w-full py-3.5 rounded-xl font-semibold transition text-lg shadow-md ${
                 isLoggedIn
-                  ? "bg-gradient-to-r from-teal-500 to-blue-600 text-white hover:shadow-lg hover:scale-105"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white hover:shadow-lg hover:scale-[1.01]"
+                  : "bg-gray-300 dark:bg-slate-700 text-gray-500 dark:text-slate-400 cursor-not-allowed"
               }`}
             >
               {lang === "en" ? "Submit" : "जमा करें"}
             </button>
           </form>
 
-          <div className="mt-8 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 p-6">
-            <h3 className="font-bold text-lg mb-4">
+          <div className="mt-8 bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-xl text-gray-700 dark:text-slate-300 p-6 transition-colors">
+            <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-white">
               {lang === "en" ? "Instructions:" : "निर्देश:"}
             </h3>
             <ol className="list-decimal list-inside space-y-2 text-sm">
@@ -266,13 +266,13 @@ function ReportIssue() {
 
           {previewUrl && (
             <div className="mt-6">
-              <p className="font-bold text-gray-700">
+              <p className="font-bold text-gray-700 dark:text-slate-300 mb-2">
                 {lang === "en" ? "Preview:" : "पूर्वावलोकन:"}
               </p>
               <img
                 src={previewUrl}
                 alt="Preview"
-                className="w-full rounded-xl mt-3 shadow-md border"
+                className="w-full rounded-xl shadow-md border border-gray-200 dark:border-slate-700"
               />
             </div>
           )}
@@ -281,13 +281,13 @@ function ReportIssue() {
 
       {status && (
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="bg-white p-10 rounded-2xl shadow-2xl text-center max-w-sm border border-gray-200">
+          <div className="bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl text-center max-w-sm border border-gray-200 dark:border-slate-700">
             {status === "success" && (
               <>
-                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-green-100 text-green-600 rounded-full text-4xl shadow">
+                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400 rounded-full text-4xl shadow">
                   ✔
                 </div>
-                <p className="mt-6 text-xl font-bold text-green-600">
+                <p className="mt-6 text-xl font-bold text-green-600 dark:text-green-400">
                   {lang === "en"
                     ? "Issue reported successfully!"
                     : "समस्या सफलतापूर्वक दर्ज हुई!"}
@@ -296,10 +296,10 @@ function ReportIssue() {
             )}
             {status === "fail" && (
               <>
-                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-red-100 text-red-600 rounded-full text-4xl shadow">
+                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-full text-4xl shadow">
                   ✖
                 </div>
-                <p className="mt-6 text-xl font-bold text-red-600">
+                <p className="mt-6 text-xl font-bold text-red-600 dark:text-red-400">
                   {lang === "en"
                     ? "Failed to report issue. Try again."
                     : "समस्या दर्ज करने में विफल। पुनः प्रयास करें।"}
@@ -308,10 +308,10 @@ function ReportIssue() {
             )}
             {status === "limit" && (
               <>
-                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-yellow-100 text-yellow-600 rounded-full text-4xl shadow">
+                <div className="w-20 h-20 mx-auto flex items-center justify-center bg-yellow-100 dark:bg-amber-950/60 text-yellow-600 dark:text-amber-400 rounded-full text-4xl shadow">
                   ⚠
                 </div>
-                <p className="mt-6 text-xl font-bold text-yellow-600">
+                <p className="mt-6 text-xl font-bold text-yellow-600 dark:text-amber-400">
                   {lang === "en"
                     ? "Daily limit reached. Try after 24 hours."
                     : "दैनिक सीमा पूरी हो गई। 24 घंटे बाद प्रयास करें।"}
@@ -328,7 +328,7 @@ function ReportIssue() {
         </div>
       )}
 
-      <footer className="bg-gray-100 text-center py-6 mt-10 w-full text-gray-500 text-sm border-t border-gray-200">
+      <footer className="bg-gray-100 dark:bg-slate-900 text-center py-6 mt-10 w-full text-gray-500 dark:text-slate-500 text-sm border-t border-gray-200 dark:border-slate-800 transition-colors">
         © 2025 | Made with ❤️ by LOOP - X Team
       </footer>
     </div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { useLogin } from "../context/LoginContext";
 import LoginModal from "./LoginModal";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaRoad,
   FaTint,
@@ -12,6 +12,7 @@ import {
   FaBuilding,
   FaSearch,
   FaArrowRight,
+  FaArrowLeft,
   FaLandmark,
   FaCheckCircle,
   FaUsers,
@@ -28,6 +29,13 @@ import {
   FaChevronRight,
   FaMapMarkedAlt,
   FaFolder,
+  FaEllipsisH,
+  FaTree,
+  FaTwitter,
+  FaLinkedinIn,
+  FaInstagram,
+  FaYoutube,
+  FaChartBar,
 } from "react-icons/fa";
 
 function Home() {
@@ -36,6 +44,7 @@ function Home() {
   const { isLoggedIn } = useLogin();
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const handleReportClick = (category = null) => {
     if (isLoggedIn) {
@@ -733,96 +742,525 @@ function Home() {
         </div>
       </section>
 
-      {/* 5. HOW IT WORKS SECTION */}
-      <section className="py-16 sm:py-20">
+      {/* 5. HOW IT WORKS SECTION — redesigned to match reference */}
+      <section className="py-16 sm:py-20 bg-[#f4f8f4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
+
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <span className="inline-block bg-white border border-[#c8e6c9] text-[#1b5e20] text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-4">
+              {isHindi ? "सरल प्रक्रिया" : "Simple Process"}
+            </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
-              {isHindi ? "यह कैसे काम करता है?" : "How It Works?"}
+              {isHindi ? "यह कैसे काम करता है?" : <>
+                How It <span className="text-[#1b5e20]">Works?</span>
+              </>}
             </h2>
             <p className="text-gray-500 text-base sm:text-lg font-normal max-w-xl mx-auto">
               {isHindi
-                ? "कुछ सरल चरणों में अपनी स्थानीय समस्या दर्ज करें"
-                : "Report your local issue in just a few simple steps"}
+                ? "कुछ सरल चरणों में अपनी स्थानीय समस्या दर्ज करें और एक स्वच्छ, सुरक्षित और बेहतर शहर बनाने में मदद करें।"
+                : "Report your local issue in just a few simple steps and help us build a cleaner, safer and better city."}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            {steps.map((step, idx) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-all duration-200 relative flex flex-col items-start group"
-              >
-                {/* Arrow Connector */}
-                {idx < steps.length - 1 && (
-                  <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 z-10 text-gray-300 text-lg">
-                    <FaArrowRight />
+          {/* Two-column layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+            {/* LEFT — Numbered Step List */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col gap-3"
+            >
+              {steps.map((step, idx) => (
+                <div
+                  key={step.num}
+                  className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 hover:shadow-md hover:border-[#c8e6c9] transition-all duration-200 group cursor-pointer"
+                >
+                  {/* Step Number Circle */}
+                  <div className="w-9 h-9 rounded-full border-2 border-[#c8e6c9] bg-[#f0faf0] text-[#1b5e20] font-extrabold text-sm flex items-center justify-center shrink-0">
+                    {step.num}
                   </div>
-                )}
 
-                {/* Step Number Badge */}
-                <div className="w-7 h-7 rounded-full bg-[#e8f5e9] text-[#1b5e20] text-xs font-bold flex items-center justify-center mb-4">
-                  {step.num}
+                  {/* Icon */}
+                  <div className="w-11 h-11 rounded-xl bg-[#eaf5ea] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    {step.icon}
+                  </div>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-extrabold text-gray-900 text-base leading-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-500 text-xs sm:text-sm mt-0.5 leading-snug">
+                      {step.desc}
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <FaArrowRight className="text-gray-300 text-sm shrink-0 group-hover:text-[#1b5e20] group-hover:translate-x-1 transition-all" />
+
+                  {/* Dotted line connector below (except last) */}
+                </div>
+              ))}
+            </motion.div>
+
+            {/* RIGHT — Phone Mockup with city backdrop */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="relative flex justify-center"
+            >
+              {/* City background image container */}
+              <div className="relative w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white h-[420px] sm:h-[480px]">
+                <img
+                  src="/images/hero_city_street.jpg"
+                  alt="City Street"
+                  className="w-full h-full object-cover"
+                />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30" />
+
+                {/* Floating phone screen inset */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[210px] bg-white rounded-[1.8rem] shadow-2xl border border-gray-200 overflow-hidden z-10">
+                  {/* Phone top bar */}
+                  <div className="bg-white pt-5 pb-3 px-4 flex flex-col items-center border-b border-gray-100">
+                    <div className="w-8 h-8 rounded-xl bg-[#1b5e20] text-white flex items-center justify-center text-base mb-1 shadow">
+                      <FaLandmark />
+                    </div>
+                    <span className="font-extrabold text-gray-900 text-xs">Civic Report</span>
+                    <span className="text-[8px] text-gray-400 font-semibold">Report Today • Better Tomorrow</span>
+                  </div>
+                  {/* Phone menu items */}
+                  <div className="bg-white px-3 py-3 space-y-2">
+                    <button onClick={() => handleReportClick()} className="w-full flex items-center justify-between bg-gray-50 hover:bg-[#f0faf0] border border-gray-100 rounded-xl px-3 py-2 transition">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-[#e8f5e9] text-[#1b5e20] flex items-center justify-center text-[10px]"><FaFileAlt /></div>
+                        <span className="text-[10px] font-bold text-gray-800">Report an Issue</span>
+                      </div>
+                      <FaChevronRight className="text-gray-400 text-[9px]" />
+                    </button>
+                    <button onClick={handleTrackClick} className="w-full flex items-center justify-between bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-xl px-3 py-2 transition">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-[#e0f2fe] text-[#0284c7] flex items-center justify-center text-[10px]"><FaSearch /></div>
+                        <span className="text-[10px] font-bold text-gray-800">Track Status</span>
+                      </div>
+                      <FaChevronRight className="text-gray-400 text-[9px]" />
+                    </button>
+                    <button onClick={handleTrackClick} className="w-full flex items-center justify-between bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-xl px-3 py-2 transition">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-[#f3e5f5] text-[#9333ea] flex items-center justify-center text-[10px]"><FaMapMarkedAlt /></div>
+                        <span className="text-[10px] font-bold text-gray-800">View Map</span>
+                      </div>
+                      <FaChevronRight className="text-gray-400 text-[9px]" />
+                    </button>
+                    <button onClick={handleTrackClick} className="w-full flex items-center justify-between bg-gray-50 hover:bg-orange-50 border border-gray-100 rounded-xl px-3 py-2 transition">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-[#fff3e0] text-[#ea580c] flex items-center justify-center text-[10px]"><FaFolder /></div>
+                        <span className="text-[10px] font-bold text-gray-800">My Reports</span>
+                      </div>
+                      <FaChevronRight className="text-gray-400 text-[9px]" />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Icon Box */}
-                <div className="w-14 h-14 rounded-2xl bg-[#e8f5e9] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                  {step.icon}
+                {/* Floating badge — top right */}
+                <div className="absolute top-5 right-4 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-gray-100 max-w-[170px] z-20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f5e9] text-[#1b5e20] flex items-center justify-center text-sm shrink-0">
+                      <FaCheckCircle />
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-gray-900 text-[10px] leading-tight">Your Report Matters</p>
+                      <p className="text-[9px] text-gray-500 mt-0.5">Together we can make our cities better.</p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="font-extrabold text-gray-900 text-lg mb-2">
-                  {step.title}
-                </h3>
+                {/* Floating badge — bottom right */}
+                <div className="absolute bottom-5 right-4 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-gray-100 max-w-[160px] z-20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f5e9] text-[#1b5e20] flex items-center justify-center text-sm shrink-0">
+                      <FaUsers />
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-gray-900 text-[10px] leading-tight">Be the Change</p>
+                      <p className="text-[9px] text-gray-500 mt-0.5">Report issues, improve your city.</p>
+                    </div>
+                  </div>
+                </div>
 
-                {/* Description */}
-                <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
-                  {step.desc}
-                </p>
-              </motion.div>
-            ))}
+                {/* Decorative slash marks */}
+                <div className="absolute top-5 left-5 text-white/40 text-xl font-bold select-none">/ /</div>
+                <div className="absolute bottom-28 left-5 text-white/40 text-xl font-bold select-none">/ /</div>
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* 6. ABOUT US SECTION */}
-      <section id="about-section" className="py-16 bg-white border-t border-gray-100">
+      {/* 5b. COMMON ISSUES IN YOUR CITY */}
+      <section className="py-16 sm:py-20 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#e8f5e9] text-[#1b5e20] px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              Civic Report Vision
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-6">
-              {isHindi ? "हमारे बारे में" : "About Us"}
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <span className="inline-block bg-[#e8f5e9] border border-[#c8e6c9] text-[#1b5e20] text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-4">
+              {isHindi ? "क्या रिपोर्ट करें?" : "What Can You Report?"}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+              {isHindi ? (
+                <>आपके शहर में <span className="text-[#1b5e20]">सामान्य समस्याएं</span></>
+              ) : (
+                <>Common Issues in <span className="text-[#1b5e20]">Your City</span></>
+              )}
             </h2>
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8">
+            <p className="text-gray-500 text-base sm:text-lg font-normal max-w-xl mx-auto">
               {isHindi
-                ? "Civic Report का उद्देश्य नागरिकों को एक सरल, पारदर्शी और त्वरित मंच प्रदान करना है। हमारा लक्ष्य सड़क, जल, बिजली और स्वच्छता की समस्याओं को सीधे संबंधित अधिकारियों तक पहुँचाकर त्वरित समाधान सुनिश्चित करना है।"
-                : "Civic Report aims to empower every citizen with a simple, transparent, and direct channel to local administration. Together with real-time AI classification and status updates, we make civic issue resolution fast, verifiable, and accountable."}
+                ? "नागरिक समस्याओं की एक विस्तृत श्रृंखला की रिपोर्ट करें और अपने स्थानीय प्राधिकरण को कार्रवाई करने में मदद करें।"
+                : "Report a wide range of civic issues and help your local authority take action."}
             </p>
           </div>
+
+          {/* Category Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              {
+                id: "roads",
+                title: isHindi ? "सड़कें" : "Roads",
+                subtitle: isHindi ? "गड्ढे, क्षति" : "Potholes, Damage",
+                icon: <FaRoad className="text-2xl text-[#1b5e20]" />,
+                bg: "bg-[#eaf5ea]",
+                border: "border-[#c8e6c9]",
+              },
+              {
+                id: "water",
+                title: isHindi ? "जल" : "Water",
+                subtitle: isHindi ? "आपूर्ति, रिसाव" : "Supply, Leakage",
+                icon: <FaTint className="text-2xl text-[#0284c7]" />,
+                bg: "bg-[#e0f2fe]",
+                border: "border-[#bae6fd]",
+              },
+              {
+                id: "electricity",
+                title: isHindi ? "बिजली" : "Electricity",
+                subtitle: isHindi ? "कटौती, खंभे" : "Outage, Poles",
+                icon: <FaBolt className="text-2xl text-[#ea580c]" />,
+                bg: "bg-[#fff7ed]",
+                border: "border-[#fed7aa]",
+              },
+              {
+                id: "cleanliness",
+                title: isHindi ? "स्वच्छता" : "Cleanliness",
+                subtitle: isHindi ? "कचरा, सफाई" : "Garbage, Sanitation",
+                icon: <FaTrash className="text-2xl text-[#dc2626]" />,
+                bg: "bg-[#fff1f2]",
+                border: "border-[#fecdd3]",
+              },
+              {
+                id: "public",
+                title: isHindi ? "सार्वजनिक स्थान" : "Public Places",
+                subtitle: isHindi ? "पार्क, स्ट्रीट लाइट" : "Parks, Street Lights",
+                icon: <FaTree className="text-2xl text-[#059669]" />,
+                bg: "bg-[#ecfdf5]",
+                border: "border-[#a7f3d0]",
+              },
+              {
+                id: "other",
+                title: isHindi ? "अन्य" : "Other",
+                subtitle: isHindi ? "कोई भी नागरिक समस्या" : "Any Civic Issue",
+                icon: <FaEllipsisH className="text-2xl text-gray-500" />,
+                bg: "bg-gray-100",
+                border: "border-gray-200",
+              },
+            ].map((cat) => (
+              <motion.button
+                key={cat.id}
+                onClick={() => handleReportClick(cat.id === "public" || cat.id === "other" ? undefined : cat.id)}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+                className={`flex flex-col items-center text-center p-5 rounded-2xl bg-white border ${cat.border} shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group`}
+              >
+                <div className={`w-14 h-14 rounded-full ${cat.bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
+                  {cat.icon}
+                </div>
+                <span className="font-extrabold text-gray-900 text-sm">{cat.title}</span>
+                <span className="text-[11px] text-gray-400 font-medium mt-0.5">{cat.subtitle}</span>
+              </motion.button>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. TESTIMONIALS — "Trusted by People in Your Community" */}
+      <section className="py-16 sm:py-20 bg-[#f4f8f4] border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <span className="inline-block bg-white border border-[#c8e6c9] text-[#1b5e20] text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-4">
+              {isHindi ? "नागरिक क्या कहते हैं" : "What Citizens Say"}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+              {isHindi ? (
+                <>आपके <span className="text-[#1b5e20]">समुदाय</span> के लोगों द्वारा विश्वसनीय</>
+              ) : (
+                <>Trusted by People in <span className="text-[#1b5e20]">Your Community</span></>
+              )}
+            </h2>
+            <p className="text-gray-500 text-base max-w-lg mx-auto">
+              {isHindi
+                ? "उन नागरिकों की वास्तविक प्रतिक्रिया जिन्होंने रिपोर्ट किया और बदलाव देखा।"
+                : "Real feedback from citizens who have reported and seen change."}
+            </p>
+          </div>
+
+          {/* Carousel */}
+          <div className="relative">
+            {/* Prev button */}
+            <button
+              onClick={() => setActiveTestimonial((p) => (p === 0 ? 2 : p - 1))}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-gray-500 hover:text-[#1b5e20] hover:border-[#c8e6c9] transition-all"
+            >
+              <FaArrowLeft className="text-sm" />
+            </button>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 overflow-hidden">
+              {[
+                {
+                  name: "Aman Singh",
+                  location: "Rajpur, Dehradun",
+                  review: isHindi
+                    ? "\"बहुत उपयोग में आसान। मैंने एक गड्ढे की रिपोर्ट की और कुछ दिनों में वह ठीक हो गई। शानदार पहल!\""
+                    : "\"Very easy to use. I reported a pothole and it was resolved within a few days. Great initiative!\"",
+                  rating: 5,
+                  initial: "A",
+                  color: "bg-[#e8f5e9] text-[#1b5e20]",
+                },
+                {
+                  name: "Priya Sharma",
+                  location: "Dalanwala, Dehradun",
+                  review: isHindi
+                    ? "\"अब स्थानीय समस्याओं की रिपोर्ट करना बहुत आसान हो गया है। ट्रैकिंग फीचर बहुत उपयोगी है।\""
+                    : "\"Now it's much easier to report local problems. The tracking feature is very helpful.\"",
+                  rating: 5,
+                  initial: "P",
+                  color: "bg-[#e0f2fe] text-[#0284c7]",
+                },
+                {
+                  name: "Rohit Verma",
+                  location: "Indira Nagar, Dehradun",
+                  review: isHindi
+                    ? "\"मैंने एक स्ट्रीट लाइट की समस्या रिपोर्ट की और वह ठीक हो गई। Civic Report सच में काम करता है!\""
+                    : "\"I reported a street light issue and it was fixed quickly. Civic Report really works!\"",
+                  rating: 5,
+                  initial: "R",
+                  color: "bg-[#f3e5f5] text-[#9333ea]",
+                },
+              ].map((t, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4 hover:shadow-md transition-all duration-200"
+                >
+                  {/* Reviewer header */}
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-full ${t.color} flex items-center justify-center text-lg font-extrabold shrink-0`}>
+                      {t.initial}
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-gray-900 text-sm">{t.name}</p>
+                      <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
+                        <FaMapMarkerAlt className="text-[10px]" />
+                        {t.location}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Stars */}
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: t.rating }).map((_, si) => (
+                      <FaStar key={si} className="text-amber-400 text-sm" />
+                    ))}
+                  </div>
+                  {/* Review text */}
+                  <p className="text-gray-600 text-sm leading-relaxed italic">{t.review}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Next button */}
+            <button
+              onClick={() => setActiveTestimonial((p) => (p === 2 ? 0 : p + 1))}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-gray-500 hover:text-[#1b5e20] hover:border-[#c8e6c9] transition-all"
+            >
+              <FaArrowRight className="text-sm" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CTA — "Let's Build a Better Tomorrow" */}
+      <section className="relative overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[420px]">
+
+          {/* LEFT — Text content */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#eaf5ea] flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-16"
+          >
+            <span className="inline-block bg-white border border-[#c8e6c9] text-[#1b5e20] text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-6 self-start">
+              {isHindi ? "परिवर्तन बनें" : "Be the Change"}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+              {isHindi
+                ? <>चलो एक <span className="text-[#1b5e20]">बेहतर कल</span> बनाएं</>
+                : <>Let's Build a <span className="text-[#1b5e20]">Better Tomorrow</span></>}
+            </h2>
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+              {isHindi
+                ? "आपकी रिपोर्ट आपके शहर में वास्तविक बदलाव ला सकती है। स्थानीय समस्याओं की रिपोर्ट करें, प्रगति ट्रैक करें और स्वच्छ, सुरक्षित और अधिक रहने योग्य समुदाय बनाने में मदद करें।"
+                : "Your report can make a real difference in your city. Report local issues, track progress, and help create cleaner, safer and more livable communities."}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => handleReportClick()}
+                className="bg-[#1b5e20] hover:bg-[#144718] text-white px-7 py-3.5 rounded-full font-semibold text-base flex items-center gap-2 shadow-lg shadow-green-900/20 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+              >
+                <FaFileAlt className="text-sm" />
+                <span>{isHindi ? "समस्या दर्ज करें" : "Report an Issue"}</span>
+                <FaArrowRight className="text-sm" />
+              </button>
+              <button
+                onClick={handleTrackClick}
+                className="bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 px-7 py-3.5 rounded-full font-semibold text-base flex items-center gap-2 shadow-sm transition-all duration-200"
+              >
+                <FaChartBar className="text-sm text-gray-500" />
+                <span>{isHindi ? "स्थिति ट्रैक करें" : "Track Status"}</span>
+              </button>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — City photo with stats overlay */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative min-h-[340px]"
+          >
+            <img
+              src="/images/hero_city_street.jpg"
+              alt="City"
+              className="w-full h-full object-cover"
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-l from-black/20 to-transparent" />
+
+            {/* Stats card overlay */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100 px-6 py-5">
+              <div className="grid grid-cols-4 divide-x divide-gray-100">
+                {[
+                  { icon: <FaUsers className="text-xl text-[#1b5e20]" />, value: "10,000+", label: isHindi ? "सक्रिय नागरिक" : "Active Citizens", bg: "bg-[#e8f5e9]" },
+                  { icon: <FaCheckCircle className="text-xl text-[#1b5e20]" />, value: "8,200+", label: isHindi ? "समस्याएं हल" : "Issues Resolved", bg: "bg-[#e8f5e9]" },
+                  { icon: <FaLandmark className="text-xl text-[#1b5e20]" />, value: "25+", label: isHindi ? "नगर निगम क्षेत्र" : "Municipal Areas", bg: "bg-[#e8f5e9]" },
+                  { icon: <FaStar className="text-xl text-amber-400" />, value: "4.5/5", label: isHindi ? "उपयोगकर्ता संतुष्टि" : "User Satisfaction", bg: "bg-amber-50" },
+                ].map((s, i) => (
+                  <div key={i} className={`flex flex-col items-center text-center px-2 ${i > 0 ? "pl-3" : ""}`}>
+                    <div className={`w-9 h-9 rounded-xl ${s.bg} flex items-center justify-center mb-2`}>
+                      {s.icon}
+                    </div>
+                    <span className="font-extrabold text-gray-900 text-base leading-tight">{s.value}</span>
+                    <span className="text-[10px] text-gray-500 font-medium mt-0.5 leading-tight">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#1b5e20] text-white flex items-center justify-center text-sm font-bold">
-              <FaLandmark />
+      <footer id="about-section" className="bg-gray-900 text-gray-400 pt-12 pb-6 border-t border-gray-800 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Top Row */}
+          <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-10">
+
+            {/* Brand */}
+            <div className="flex flex-col gap-3 max-w-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-xl bg-[#1b5e20] text-white flex items-center justify-center text-base">
+                  <FaLandmark />
+                </div>
+                <span className="text-white font-extrabold text-xl tracking-tight">Civic Report</span>
+              </div>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {isHindi
+                  ? "स्थानीय समस्याओं को रिपोर्ट करने का सबसे सरल और प्रभावी तरीका।"
+                  : "The simplest and most effective way to report local civic issues."}
+              </p>
             </div>
-            <span className="text-white font-extrabold text-lg tracking-tight">
-              Civic Report
-            </span>
+
+            {/* Nav Links */}
+            <div className="flex flex-wrap gap-x-10 gap-y-3">
+              {[
+                { label: isHindi ? "होम" : "Home", action: () => navigate("/") },
+                { label: isHindi ? "हमारे बारे में" : "About", action: () => {} },
+                { label: isHindi ? "समस्या दर्ज करें" : "Report an Issue", action: () => handleReportClick() },
+                { label: isHindi ? "स्थिति ट्रैक करें" : "Track Status", action: () => handleTrackClick() },
+                { label: isHindi ? "संपर्क" : "Contact", action: () => {} },
+              ].map((link) => (
+                <button
+                  key={link.label}
+                  onClick={link.action}
+                  className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-3">
+              {[
+                { icon: <FaTwitter />, label: "Twitter" },
+                { icon: <FaLinkedinIn />, label: "LinkedIn" },
+                { icon: <FaInstagram />, label: "Instagram" },
+                { icon: <FaYoutube />, label: "YouTube" },
+              ].map((s) => (
+                <button
+                  key={s.label}
+                  aria-label={s.label}
+                  className="w-9 h-9 rounded-full bg-gray-800 hover:bg-[#1b5e20] text-gray-400 hover:text-white flex items-center justify-center text-sm transition-all duration-200"
+                >
+                  {s.icon}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <p className="text-xs text-gray-500">
-            © 2026 Civic Report • Report Today, Better Tomorrow.
-          </p>
+          {/* Divider + Copyright */}
+          <div className="border-t border-gray-800 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-gray-500">© 2024 Civic Report. All rights reserved.</p>
+            <p className="text-xs text-gray-600 italic">Report Today • Better Tomorrow</p>
+          </div>
+
         </div>
       </footer>
 

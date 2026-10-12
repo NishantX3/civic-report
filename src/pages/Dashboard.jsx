@@ -33,9 +33,9 @@ function Dashboard() {
   }, [userEmail]);
 
   return (
-    <div className="p-8 min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-gray-100 to-white text-gray-900">
+    <div className="p-8 min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-gray-100 to-white dark:from-[#0b1120] dark:via-slate-900 dark:to-[#0b1120] text-gray-900 dark:text-slate-100 transition-colors duration-300">
       {/* Header */}
-      <h2 className="text-4xl font-extrabold mb-10 w-full max-w-5xl text-left bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-wide drop-shadow-sm">
+      <h2 className="text-4xl font-extrabold mb-10 w-full max-w-5xl text-left bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent tracking-wide drop-shadow-sm">
         {lang === "en" ? "Dashboard" : "डैशबोर्ड"}
       </h2>
 
@@ -56,7 +56,7 @@ function Dashboard() {
             />
           ))
         ) : (
-          <p className="text-gray-500 italic text-center col-span-2">
+          <p className="text-gray-500 dark:text-slate-400 italic text-center col-span-2 py-12 text-lg">
             {lang === "en"
               ? "No issues reported yet."
               : "अभी तक कोई समस्या रिपोर्ट नहीं की गई है।"}
